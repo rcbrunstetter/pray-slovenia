@@ -48,7 +48,7 @@ export default async function Home() {
       {prayerRequests.length > 0 && (
         <section>
           <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.3rem', fontWeight: 600, color: '#2c2416', marginBottom: '1.25rem', textAlign: 'center' }}>
-            Prayer Requests Outside of the Calendar
+            Live Updates
           </h2>
           {prayerRequests.map((req, index) => (
             <div key={req.id} style={{
