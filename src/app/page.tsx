@@ -1,6 +1,7 @@
 import { createClientServer } from "@/lib/supabase-server";
 import TodayCard from "./today-card";
 import Link from "next/link";
+import NotificationPrompt from "@/components/NotificationPrompt";
 
 export default async function Home() {
   const supabase = await createClientServer();
@@ -38,16 +39,16 @@ export default async function Home() {
     <>
       <TodayCard prompt={prompt} initialTotal={total} />
 
-      {/* Calendar link — clean, subtle */}
+      <NotificationPrompt />
+
       <Link href="/calendar" style={{ display: 'block', textAlign: 'center', color: '#9c8b75', fontSize: '0.8rem', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', marginBottom: '2.5rem', paddingBottom: '2rem', borderBottom: '1px solid #e8e0d4' }}>
         View full month calendar →
       </Link>
 
-      {/* Prayer Requests */}
       {prayerRequests.length > 0 && (
         <section>
-          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.3rem', fontWeight: 600, color: '#2c2416', marginBottom: '1.25rem', textAlign:'center' }}>
-            Prayer Requests Outside the Calendar
+          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.3rem', fontWeight: 600, color: '#2c2416', marginBottom: '1.25rem', textAlign: 'center' }}>
+            Prayer Requests Outside of the Calendar
           </h2>
           {prayerRequests.map((req, index) => (
             <div key={req.id} style={{
@@ -81,7 +82,7 @@ export default async function Home() {
       )}
 
       {prayerRequests.length === 0 && (
-        <p style={{ color: '#9c8b75', fontStyle: 'italic', fontSize: '0.95rem' }}>
+        <p style={{ color: '#9c8b75', fontStyle: 'italic', fontSize: '0.95rem', textAlign: 'center' }}>
           No active prayer requests right now.
         </p>
       )}
