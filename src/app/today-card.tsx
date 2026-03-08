@@ -23,7 +23,7 @@ export default function TodayCard({
       .on("postgres_changes", { event: "*", schema: "public", table: "daily_totals" },
         (payload) => {
           const row = payload.new as any;
-          if (row?.date === new Date().toISOString().slice(0, 10)) {
+          if (row?.date === new Date().toLocaleDateString("en-CA", { timeZone: "Europe/Ljubljana" })) {
             setTotal(row.total ?? 0);
           }
         }
