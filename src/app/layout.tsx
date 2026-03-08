@@ -30,6 +30,14 @@ export default function RootLayout({
           <a href="/" style={{ color: '#f5f0e8', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '0.75rem 1.5rem', display: 'block' }}>Today</a>
           <a href="/calendar" style={{ color: '#f5f0e8', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '0.75rem 1.5rem', display: 'block' }}>Calendar</a>
           <a href="/admin" style={{ color: '#f5f0e8', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '0.75rem 1.5rem', display: 'block' }}>Admin</a>
+          <link rel="manifest" href="/site.webmanifest" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+<link rel="icon" href="/favicon.ico" />
+<meta name="theme-color" content="#7a5c3a" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="Pray Slovenia" />
         </nav>
         <main style={{ maxWidth: '680px', margin: '0 auto', padding: '2.5rem 1.25rem 4rem' }}>
           {children}
