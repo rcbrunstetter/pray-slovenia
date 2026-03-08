@@ -37,9 +37,9 @@ export default async function Home() {
 
   return (
     <>
-      <TodayCard prompt={prompt} initialTotal={total} />
-
       <NotificationPrompt />
+
+      <TodayCard prompt={prompt} initialTotal={total} />
 
       <Link href="/calendar" style={{ display: 'block', textAlign: 'center', color: '#9c8b75', fontSize: '0.8rem', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', marginBottom: '2.5rem', paddingBottom: '2rem', borderBottom: '1px solid #e8e0d4' }}>
         View full month calendar →
