@@ -10,9 +10,9 @@ export default function CalendarPage() {
   const [prompts, setPrompts] = useState<Prompt[]>([]);
   const [selected, setSelected] = useState<Prompt | null>(null);
   const [year, setYear] = useState(new Date().getFullYear());
-  const [month, setMonth] = useState(new Date().getMonth()); // 0-indexed
+  const [month, setMonth] = useState(new Date().getMonth());
 
-  const today = new Date().toISOString().slice(0, 10);
+  const today = new Date().toLocaleDateString("en-CA", { timeZone: "Europe/Ljubljana" });
 
   useEffect(() => {
     const firstDay = `${year}-${String(month + 1).padStart(2, '0')}-01`;
@@ -25,7 +25,7 @@ export default function CalendarPage() {
       .gte("date", firstDay)
       .lte("date", lastDayStr)
       .then(({ data }) => setPrompts(data ?? []));
-  }, [year, month]);
+  }, [year, month, supabase]);
 
   const monthName = new Date(year, month).toLocaleDateString("en-US", { month: "long", year: "numeric" });
   const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -44,7 +44,7 @@ export default function CalendarPage() {
 
   const days = [];
   for (let i = 0; i < firstDayOfWeek; i++) {
-    days.push(<div key={`empty-${i}`} />);
+    days.push(<div key={`empty-${i}`} style={{ minWidth: 0 }} />);
   }
   for (let d = 1; d <= daysInMonth; d++) {
     const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
@@ -62,6 +62,8 @@ export default function CalendarPage() {
           borderRadius: '10px',
           padding: '0.6rem',
           minHeight: '80px',
+          minWidth: 0,
+          overflow: 'hidden',
           cursor: prompt ? 'pointer' : 'default',
           opacity: isPast && !isToday ? 0.7 : 1,
           transition: 'transform 0.1s, box-shadow 0.1s',
@@ -72,7 +74,7 @@ export default function CalendarPage() {
       >
         <div style={{ fontSize: '0.75rem', fontWeight: 600, color: isToday ? '#f5f0e8' : '#9c8b75', marginBottom: '0.3rem' }}>{d}</div>
         {prompt && (
-          <div style={{ fontSize: '0.72rem', color: isToday ? '#f5efe3' : '#6b5c45', lineHeight: 1.3, fontFamily: "'Lora', serif" }}>
+          <div style={{ fontSize: '0.72rem', color: isToday ? '#f5efe3' : '#6b5c45', lineHeight: 1.3, fontFamily: "'Lora', serif", wordBreak: 'break-word' }}>
             {prompt.title.length > 40 ? prompt.title.slice(0, 40) + '…' : prompt.title}
           </div>
         )}
@@ -84,7 +86,7 @@ export default function CalendarPage() {
   }
 
   return (
-    <div>
+    <div style={{ maxWidth: '100%', overflow: 'hidden' }}>
       <a href="/" style={{ color: '#7a5c3a', fontSize: '0.9rem', textDecoration: 'none', display: 'inline-block', marginBottom: '1.5rem' }}>← Back to today</a>
 
       {/* Month navigation */}
@@ -95,14 +97,14 @@ export default function CalendarPage() {
       </div>
 
       {/* Day labels */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '0.4rem', marginBottom: '0.4rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, minmax(0, 1fr))', gap: '0.4rem', marginBottom: '0.4rem' }}>
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
           <div key={d} style={{ textAlign: 'center', fontSize: '0.7rem', fontWeight: 500, color: '#9c8b75', letterSpacing: '0.05em', textTransform: 'uppercase', padding: '0.25rem 0' }}>{d}</div>
         ))}
       </div>
 
       {/* Calendar grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '0.4rem', marginBottom: '2rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, minmax(0, 1fr))', gap: '0.4rem', marginBottom: '2rem' }}>
         {days}
       </div>
 
