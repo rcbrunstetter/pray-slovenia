@@ -59,9 +59,9 @@ export default function CalendarPage() {
         style={{
           background: isToday ? '#7a5c3a' : prompt ? '#faf7f0' : '#f0ece4',
           border: `1px solid ${isToday ? '#7a5c3a' : '#d9cfc0'}`,
-          borderRadius: '10px',
-          padding: '0.6rem',
-          minHeight: '80px',
+          borderRadius: '8px',
+          padding: '0.4rem',
+          minHeight: '60px',
           minWidth: 0,
           overflow: 'hidden',
           cursor: prompt ? 'pointer' : 'default',
@@ -72,14 +72,14 @@ export default function CalendarPage() {
         onMouseEnter={e => { if (prompt) { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 12px rgba(44,36,22,0.12)'; }}}
         onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = ''; (e.currentTarget as HTMLElement).style.boxShadow = ''; }}
       >
-        <div style={{ fontSize: '0.75rem', fontWeight: 600, color: isToday ? '#f5f0e8' : '#9c8b75', marginBottom: '0.3rem' }}>{d}</div>
+        <div style={{ fontSize: '0.7rem', fontWeight: 600, color: isToday ? '#f5f0e8' : '#9c8b75', marginBottom: '0.2rem' }}>{d}</div>
         {prompt && (
-          <div style={{ fontSize: '0.72rem', color: isToday ? '#f5efe3' : '#6b5c45', lineHeight: 1.3, fontFamily: "'Lora', serif", wordBreak: 'break-word' }}>
-            {prompt.title.length > 40 ? prompt.title.slice(0, 40) + '…' : prompt.title}
+          <div style={{ fontSize: '0.62rem', color: isToday ? '#f5efe3' : '#6b5c45', lineHeight: 1.3, fontFamily: "'Lora', serif", overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' as const }}>
+            {prompt.title.length > 20 ? prompt.title.slice(0, 20) + '…' : prompt.title}
           </div>
         )}
         {!prompt && (
-          <div style={{ fontSize: '0.65rem', color: '#c4b8a8', fontStyle: 'italic' }}>—</div>
+          <div style={{ fontSize: '0.6rem', color: '#c4b8a8', fontStyle: 'italic' }}>—</div>
         )}
       </div>
     );
@@ -97,14 +97,14 @@ export default function CalendarPage() {
       </div>
 
       {/* Day labels */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, minmax(0, 1fr))', gap: '0.4rem', marginBottom: '0.4rem' }}>
-        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
-          <div key={d} style={{ textAlign: 'center', fontSize: '0.7rem', fontWeight: 500, color: '#9c8b75', letterSpacing: '0.05em', textTransform: 'uppercase', padding: '0.25rem 0' }}>{d}</div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, minmax(0, 1fr))', gap: '0.3rem', marginBottom: '0.3rem' }}>
+        {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
+          <div key={i} style={{ textAlign: 'center', fontSize: '0.65rem', fontWeight: 500, color: '#9c8b75', letterSpacing: '0.05em', textTransform: 'uppercase', padding: '0.25rem 0' }}>{d}</div>
         ))}
       </div>
 
       {/* Calendar grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, minmax(0, 1fr))', gap: '0.4rem', marginBottom: '2rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, minmax(0, 1fr))', gap: '0.3rem', marginBottom: '2rem' }}>
         {days}
       </div>
 
