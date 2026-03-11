@@ -2,11 +2,11 @@ export default function TeamPage() {
   const mission = "Pray Slovenia exists to mobilize believers around the world to intercede for the nation of Slovenia — one of the least evangelized countries in Europe. Through daily prayer, we believe God is moving in the hearts of the Slovenian people, and that a great awakening is coming to this beautiful alpine nation.";
 
   const team = [
-    { name: "The Manley Family", roles: ["Team Leaders"] },
-    { name: "The Bell Family", roles: ["Church Planters"] },
-    { name: "The Brunstetter Family", roles: ["Church Planters", "Student Strategists"] },
-    { name: "The Bates Family", roles: ["Church Planters"] },
-    { name: "Josh Johnston", roles: ["Church Planter"] },
+    { name: "The Manley Family", roles: ["Team Leaders"], photo: null },
+    { name: "The Bell Family", roles: ["Church Planters"], photo: null },
+    { name: "The Brunstetter Family", roles: ["Church Planters", "Student Strategists"], photo: "/team/Brunstetter-Family.JPG" },
+    { name: "The Bates Family", roles: ["Church Planters"], photo: null },
+    { name: "Josh Johnston", roles: ["Church Planter"], photo: null },
   ];
 
   return (
@@ -24,9 +24,17 @@ export default function TeamPage() {
 
       {team.map((member, index) => (
         <div key={index} style={{ background: '#faf7f2', border: '1px solid #d9cfc0', borderRadius: '12px', padding: '1.25rem 1.5rem', marginBottom: '0.75rem', display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
-          <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'linear-gradient(135deg, #c49a6c, #7a5c3a)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '1.3rem', color: '#faf7f0', fontFamily: "'Playfair Display', serif", fontWeight: 700 }}>
-            {member.name.charAt(0)}
-          </div>
+          {member.photo ? (
+            <img
+              src={member.photo}
+              alt={member.name}
+              style={{ width: '56px', height: '56px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0, border: '2px solid #d4c4a8' }}
+            />
+          ) : (
+            <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'linear-gradient(135deg, #c49a6c, #7a5c3a)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '1.3rem', color: '#faf7f0', fontFamily: "'Playfair Display', serif", fontWeight: 700 }}>
+              {member.name.charAt(0)}
+            </div>
+          )}
           <div style={{ flex: 1 }}>
             <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, fontSize: '1rem', color: '#2c2416', marginBottom: '0.3rem' }}>{member.name}</div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
