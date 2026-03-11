@@ -18,13 +18,26 @@ export default function CalendarPage() {
     const firstDay = `${year}-${String(month + 1).padStart(2, '0')}-01`;
     const lastDay = new Date(year, month + 1, 0);
     const lastDayStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(lastDay.getDate()).padStart(2, '0')}`;
+    const daysInThisMonth = lastDay.getDate();
 
-    supabase
-      .from("prayer_prompts")
-      .select("*")
-      .gte("date", firstDay)
-      .lte("date", lastDayStr)
-      .then(({ data }) => setPrompts(data ?? []));
+    Promise.all([
+      supabase.from("prayer_prompts").select("*").gte("date", firstDay).lte("date", lastDayStr),
+      supabase.from("recurring_prompts").select("*")
+    ]).then(([{ data: manual }, { data: recurring }]) => {
+      const manualMap = Object.fromEntries((manual ?? []).map(p => [p.date, p]));
+      const merged: Prompt[] = [...(manual ?? [])];
+
+      (recurring ?? []).forEach(r => {
+        if (r.day_of_month <= daysInThisMonth) {
+          const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(r.day_of_month).padStart(2, '0')}`;
+          if (!manualMap[dateStr]) {
+            merged.push({ date: dateStr, title: r.title, content: r.content, verse: r.verse });
+          }
+        }
+      });
+
+      setPrompts(merged);
+    });
   }, [year, month, supabase]);
 
   const monthName = new Date(year, month).toLocaleDateString("en-US", { month: "long", year: "numeric" });
@@ -74,34 +87,14 @@ export default function CalendarPage() {
         onMouseEnter={e => { if (prompt) { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 12px rgba(44,36,22,0.12)'; }}}
         onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = ''; (e.currentTarget as HTMLElement).style.boxShadow = ''; }}
       >
-        <div style={{
-          fontSize: '0.7rem',
-          fontWeight: 700,
-          color: isToday ? '#f5f0e8' : '#9c8b75',
-          marginBottom: '0.3rem',
-          flexShrink: 0,
-        }}>{d}</div>
+        <div style={{ fontSize: '0.7rem', fontWeight: 700, color: isToday ? '#f5f0e8' : '#9c8b75', marginBottom: '0.3rem', flexShrink: 0 }}>{d}</div>
         {prompt && (
-          <div style={{
-            fontSize: '0.68rem',
-            color: isToday ? '#f5efe3' : '#5a4a35',
-            lineHeight: 1.35,
-            fontFamily: "'Lora', serif",
-            overflow: 'hidden',
-            flex: 1,
-            wordBreak: 'break-word' as const,
-          }}>
+          <div style={{ fontSize: '0.68rem', color: isToday ? '#f5efe3' : '#5a4a35', lineHeight: 1.35, fontFamily: "'Lora', serif", overflow: 'hidden', flex: 1, wordBreak: 'break-word' as const }}>
             {prompt.title}
           </div>
         )}
         {prompt && (
-          <div style={{
-            fontSize: '0.55rem',
-            color: isToday ? '#d4b896' : '#b8a898',
-            marginTop: '0.3rem',
-            fontStyle: 'italic',
-            flexShrink: 0,
-          }}>
+          <div style={{ fontSize: '0.55rem', color: isToday ? '#d4b896' : '#b8a898', marginTop: '0.3rem', fontStyle: 'italic', flexShrink: 0 }}>
             tap to read ›
           </div>
         )}
@@ -116,21 +109,18 @@ export default function CalendarPage() {
     <div style={{ maxWidth: '100%', overflow: 'hidden' }}>
       <a href="/" style={{ color: '#7a5c3a', fontSize: '0.9rem', textDecoration: 'none', display: 'inline-block', marginBottom: '1.5rem' }}>← Back to today</a>
 
-      {/* Month navigation */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
         <button onClick={prevMonth} style={{ background: 'none', border: '1px solid #d9cfc0', borderRadius: '8px', padding: '0.5rem 1rem', cursor: 'pointer', color: '#7a5c3a', fontSize: '1rem' }}>←</button>
         <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.3rem, 3vw, 1.8rem)', fontWeight: 600, color: '#2c2416' }}>{monthName}</h1>
         <button onClick={nextMonth} style={{ background: 'none', border: '1px solid #d9cfc0', borderRadius: '8px', padding: '0.5rem 1rem', cursor: 'pointer', color: '#7a5c3a', fontSize: '1rem' }}>→</button>
       </div>
 
-      {/* Day labels */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, minmax(0, 1fr))', gap: '0.3rem', marginBottom: '0.3rem' }}>
         {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
           <div key={i} style={{ textAlign: 'center', fontSize: '0.65rem', fontWeight: 500, color: '#9c8b75', letterSpacing: '0.05em', textTransform: 'uppercase', padding: '0.25rem 0' }}>{d}</div>
         ))}
       </div>
 
-      {/* Calendar grid */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, minmax(0, 1fr))', gap: '0.3rem', marginBottom: '2rem' }}>
         {days}
       </div>
@@ -139,7 +129,6 @@ export default function CalendarPage() {
         Tap a day to read the full prayer prompt
       </p>
 
-      {/* Modal */}
       {selected && (
         <div
           onClick={() => setSelected(null)}
