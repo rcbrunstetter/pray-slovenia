@@ -17,6 +17,14 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Source+Sans+3:wght@300;400;500&display=swap" rel="stylesheet" />
+        <link rel="manifest" href="/site.webmanifest" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+        <link rel="icon" href="/favicon.ico" />
+        <meta name="theme-color" content="#7a5c3a" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Pray Slovenia" />
       </head>
       <body style={{ backgroundColor: '#f5f0e8', color: '#2c2416', fontFamily: "'Source Sans 3', sans-serif", lineHeight: '1.7', minHeight: '100vh', margin: 0, padding: 0 }}>
         <header style={{ position: 'relative', background: 'linear-gradient(180deg, #c8b89a 0%, #b8a882 40%, #a89470 100%)', padding: '3rem 1.5rem 5rem', overflow: 'hidden', textAlign: 'center' }}>
@@ -26,18 +34,16 @@ export default function RootLayout({
           <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(2rem, 5vw, 3.2rem)', fontWeight: 700, color: '#2c2416', letterSpacing: '-0.02em', lineHeight: 1.1, position: 'relative', zIndex: 1 }}>Pray Slovenia</h1>
           <p style={{ fontFamily: "'Lora', serif", fontStyle: 'italic', color: '#4a3c2a', fontSize: '1rem', marginTop: '0.4rem', position: 'relative', zIndex: 1, opacity: 0.85 }}>"Every great work of God started with prayer. Every great work of God ended with a lack there of."</p>
         </header>
-        <nav style={{ background: '#7a5c3a', display: 'flex', justifyContent: 'center', position: 'sticky', top: 0, zIndex: 100, boxShadow: '0 2px 8px rgba(44,36,22,0.15)' }}>
-          <a href="/" style={{ color: '#f5f0e8', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '0.75rem 1.5rem', display: 'block' }}>Today</a>
-          <a href="/calendar" style={{ color: '#f5f0e8', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '0.75rem 1.5rem', display: 'block' }}>Calendar</a>
-          <a href="/admin" style={{ color: '#f5f0e8', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '0.75rem 1.5rem', display: 'block' }}>Admin</a>
-          <link rel="manifest" href="/site.webmanifest" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
-<link rel="icon" href="/favicon.ico" />
-<meta name="theme-color" content="#7a5c3a" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="default" />
-<meta name="apple-mobile-web-app-title" content="Pray Slovenia" />
+        <nav style={{ background: '#7a5c3a', display: 'flex', justifyContent: 'center', flexWrap: 'wrap', position: 'sticky', top: 0, zIndex: 100, boxShadow: '0 2px 8px rgba(44,36,22,0.15)' }}>
+          {[
+            { href: '/', label: 'Today' },
+            { href: '/calendar', label: 'Calendar' },
+            { href: '/team', label: 'Our Team' },
+            { href: '/give', label: 'Give' },
+            { href: '/admin', label: 'Admin' },
+          ].map(({ href, label }) => (
+            <a key={href} href={href} style={{ color: '#f5f0e8', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '0.75rem 1.1rem', display: 'block' }}>{label}</a>
+          ))}
         </nav>
         <main style={{ maxWidth: '680px', margin: '0 auto', padding: '2.5rem 1.25rem 4rem' }}>
           {children}
