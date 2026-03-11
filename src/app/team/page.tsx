@@ -3,10 +3,10 @@ export default function TeamPage() {
 
   const team = [
     { name: "The Manley Family", roles: ["Team Leaders","Church Planters"], photo: null },
-    { name: "The Bell Family", roles: ["Church Planters"], photo: null },
+    { name: "The Bell Family", roles: ["Church Planters"], photo: "/team/Bells.JPG" },
     { name: "The Brunstetter Family", roles: ["Church Planters", "Student Strategists"], photo: "/team/Brunstetter-Family.JPG" },
     { name: "The Bates Family", roles: ["Church Planters"], photo: null },
-    { name: "Josh Johnston", roles: ["Church Planter"], photo: null },
+    { name: "Josh Johnston", roles: ["Church Planter"], photo: "/team/Josh.JPG" },
   ];
 
   return (
