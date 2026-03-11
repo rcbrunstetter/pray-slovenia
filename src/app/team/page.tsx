@@ -18,33 +18,35 @@ export default function TeamPage() {
         </p>
       </div>
 
-      <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.4rem', fontWeight: 600, color: '#2c2416', marginBottom: '1.25rem', textAlign: 'center' }}>
+      <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.4rem', fontWeight: 600, color: '#2c2416', marginBottom: '1.5rem', textAlign: 'center' }}>
         Meet the Team
       </h2>
 
-      {team.map((member, index) => (
-        <div key={index} style={{ background: '#faf7f2', border: '1px solid #d9cfc0', borderRadius: '12px', padding: '1.25rem 1.5rem', marginBottom: '0.75rem', display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
-          {member.photo ? (
-            <img
-              src={member.photo}
-              alt={member.name}
-              style={{ width: '56px', height: '56px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0, border: '2px solid #d4c4a8' }}
-            />
-          ) : (
-            <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'linear-gradient(135deg, #c49a6c, #7a5c3a)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '1.3rem', color: '#faf7f0', fontFamily: "'Playfair Display', serif", fontWeight: 700 }}>
-              {member.name.charAt(0)}
-            </div>
-          )}
-          <div style={{ flex: 1 }}>
-            <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, fontSize: '1rem', color: '#2c2416', marginBottom: '0.3rem' }}>{member.name}</div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
-              {member.roles.map((role, i) => (
-                <span key={i} style={{ fontSize: '0.72rem', fontWeight: 500, letterSpacing: '0.07em', textTransform: 'uppercase', color: '#faf7f0', background: '#a07850', borderRadius: '4px', padding: '0.15rem 0.5rem' }}>{role}</span>
-              ))}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
+        {team.map((member, index) => (
+          <div key={index} style={{ background: '#faf7f2', border: '1px solid #d9cfc0', borderRadius: '14px', overflow: 'hidden', textAlign: 'center' }}>
+            {member.photo ? (
+              <img
+                src={member.photo}
+                alt={member.name}
+                style={{ width: '100%', height: '180px', objectFit: 'cover', display: 'block' }}
+              />
+            ) : (
+              <div style={{ width: '100%', height: '180px', background: 'linear-gradient(135deg, #c49a6c, #7a5c3a)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem', color: '#faf7f0', fontFamily: "'Playfair Display', serif", fontWeight: 700 }}>
+                {member.name.charAt(0)}
+              </div>
+            )}
+            <div style={{ padding: '1rem' }}>
+              <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, fontSize: '0.95rem', color: '#2c2416', marginBottom: '0.4rem' }}>{member.name}</div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.3rem', justifyContent: 'center' }}>
+                {member.roles.map((role, i) => (
+                  <span key={i} style={{ fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.07em', textTransform: 'uppercase', color: '#faf7f0', background: '#a07850', borderRadius: '4px', padding: '0.15rem 0.5rem' }}>{role}</span>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }
