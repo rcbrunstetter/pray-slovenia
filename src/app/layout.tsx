@@ -34,22 +34,26 @@ export default function RootLayout({
           <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(2rem, 5vw, 3.2rem)', fontWeight: 700, color: '#2c2416', letterSpacing: '-0.02em', lineHeight: 1.1, position: 'relative', zIndex: 1 }}>Pray Slovenia</h1>
           <p style={{ fontFamily: "'Lora', serif", fontStyle: 'italic', color: '#4a3c2a', fontSize: '1rem', marginTop: '0.4rem', position: 'relative', zIndex: 1, opacity: 0.85 }}>"Every great work of God started with prayer. Every great work of God ended with a lack there of."</p>
         </header>
+
         <nav style={{ background: '#7a5c3a', display: 'flex', justifyContent: 'center', flexWrap: 'wrap', position: 'sticky', top: 0, zIndex: 100, boxShadow: '0 2px 8px rgba(44,36,22,0.15)' }}>
           {[
             { href: '/', label: 'Today' },
             { href: '/calendar', label: 'Calendar' },
             { href: '/team', label: 'Our Team' },
             { href: '/give', label: 'Give' },
-            { href: '/admin', label: 'Admin' },
           ].map(({ href, label }) => (
             <a key={href} href={href} style={{ color: '#f5f0e8', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '0.75rem 1.1rem', display: 'block' }}>{label}</a>
           ))}
         </nav>
+
         <main style={{ maxWidth: '680px', margin: '0 auto', padding: '2.5rem 1.25rem 4rem' }}>
           {children}
         </main>
+
         <footer style={{ textAlign: 'center', padding: '2rem', color: '#9c8b75', fontSize: '0.8rem', borderTop: '1px solid #d9cfc0', fontFamily: "'Source Sans 3', sans-serif" }}>
           Pray Slovenia · Lifting up a nation in prayer
+          <br />
+          <a href="/admin" style={{ color: '#c4b8a8', fontSize: '0.75rem', textDecoration: 'none', marginTop: '0.5rem', display: 'inline-block' }}>Admin</a>
         </footer>
       </body>
     </html>
