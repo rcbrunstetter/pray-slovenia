@@ -2,11 +2,11 @@ export default function TeamPage() {
   const mission = "Pray Slovenia exists to mobilize believers around the world to intercede for the nation of Slovenia — one of the least evangelized countries in Europe. Through daily prayer, we believe God is moving in the hearts of the Slovenian people, and that a great awakening is coming to this beautiful alpine nation.";
 
   const team = [
-    { name: "The Manley Family", role: "Field Team", bio: "Serving on the ground in Slovenia, the Manley family is committed to building relationships and sharing the gospel in their community." },
-    { name: "The Bell Family", role: "Field Team", bio: "The Bell family brings a heart for discipleship and church planting, working faithfully to see Slovenians come to know Christ." },
-    { name: "The Brunstetter Family", role: "Field Team", bio: "Passionate about prayer and mobilization, the Brunstetter family helps connect the global church to what God is doing in Slovenia." },
-    { name: "The Bates Family", role: "Field Team", bio: "The Bates family serves with joy and dedication, investing in the next generation of Slovenian believers." },
-    { name: "Josh Johnston", role: "Field Team", bio: "Josh brings energy and creativity to the team, engaging Slovenians through relationship and the power of the Holy Spirit." },
+    { name: "The Manley Family", roles: ["Team Leaders"] },
+    { name: "The Bell Family", roles: ["Church Planters"] },
+    { name: "The Brunstetter Family", roles: ["Church Planters", "Student Strategists"] },
+    { name: "The Bates Family", roles: ["Church Planters"] },
+    { name: "Josh Johnston", roles: ["Church Planter"] },
   ];
 
   return (
@@ -23,14 +23,17 @@ export default function TeamPage() {
       </h2>
 
       {team.map((member, index) => (
-        <div key={index} style={{ background: '#faf7f2', border: '1px solid #d9cfc0', borderRadius: '12px', padding: '1.25rem 1.5rem', marginBottom: '0.75rem', display: 'flex', gap: '1.25rem', alignItems: 'flex-start' }}>
-          <div style={{ width: '52px', height: '52px', borderRadius: '50%', background: 'linear-gradient(135deg, #c49a6c, #7a5c3a)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '1.2rem', color: '#faf7f0', fontFamily: "'Playfair Display', serif", fontWeight: 700 }}>
+        <div key={index} style={{ background: '#faf7f2', border: '1px solid #d9cfc0', borderRadius: '12px', padding: '1.25rem 1.5rem', marginBottom: '0.75rem', display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
+          <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'linear-gradient(135deg, #c49a6c, #7a5c3a)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '1.3rem', color: '#faf7f0', fontFamily: "'Playfair Display', serif", fontWeight: 700 }}>
             {member.name.charAt(0)}
           </div>
           <div style={{ flex: 1 }}>
-            <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, fontSize: '1rem', color: '#2c2416', marginBottom: '0.15rem' }}>{member.name}</div>
-            <div style={{ fontSize: '0.75rem', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#a07850', marginBottom: '0.4rem' }}>{member.role}</div>
-            <div style={{ fontSize: '0.9rem', color: '#6b5c45', lineHeight: 1.6 }}>{member.bio}</div>
+            <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, fontSize: '1rem', color: '#2c2416', marginBottom: '0.3rem' }}>{member.name}</div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+              {member.roles.map((role, i) => (
+                <span key={i} style={{ fontSize: '0.72rem', fontWeight: 500, letterSpacing: '0.07em', textTransform: 'uppercase', color: '#faf7f0', background: '#a07850', borderRadius: '4px', padding: '0.15rem 0.5rem' }}>{role}</span>
+              ))}
+            </div>
           </div>
         </div>
       ))}
