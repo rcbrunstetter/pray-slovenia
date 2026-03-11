@@ -60,22 +60,49 @@ export default function CalendarPage() {
           background: isToday ? '#7a5c3a' : prompt ? '#faf7f0' : '#f0ece4',
           border: `1px solid ${isToday ? '#7a5c3a' : '#d9cfc0'}`,
           borderRadius: '8px',
-          padding: '0.4rem',
-          minHeight: '60px',
+          padding: '0.5rem',
+          minHeight: '90px',
           minWidth: 0,
           overflow: 'hidden',
           cursor: prompt ? 'pointer' : 'default',
-          opacity: isPast && !isToday ? 0.7 : 1,
+          opacity: isPast && !isToday ? 0.75 : 1,
           transition: 'transform 0.1s, box-shadow 0.1s',
           position: 'relative' as const,
+          display: 'flex',
+          flexDirection: 'column' as const,
         }}
         onMouseEnter={e => { if (prompt) { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 12px rgba(44,36,22,0.12)'; }}}
         onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = ''; (e.currentTarget as HTMLElement).style.boxShadow = ''; }}
       >
-        <div style={{ fontSize: '0.7rem', fontWeight: 600, color: isToday ? '#f5f0e8' : '#9c8b75', marginBottom: '0.2rem' }}>{d}</div>
+        <div style={{
+          fontSize: '0.7rem',
+          fontWeight: 700,
+          color: isToday ? '#f5f0e8' : '#9c8b75',
+          marginBottom: '0.3rem',
+          flexShrink: 0,
+        }}>{d}</div>
         {prompt && (
-          <div style={{ fontSize: '0.62rem', color: isToday ? '#f5efe3' : '#6b5c45', lineHeight: 1.3, fontFamily: "'Lora', serif", overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' as const }}>
-            {prompt.title.length > 20 ? prompt.title.slice(0, 20) + '…' : prompt.title}
+          <div style={{
+            fontSize: '0.68rem',
+            color: isToday ? '#f5efe3' : '#5a4a35',
+            lineHeight: 1.35,
+            fontFamily: "'Lora', serif",
+            overflow: 'hidden',
+            flex: 1,
+            wordBreak: 'break-word' as const,
+          }}>
+            {prompt.title}
+          </div>
+        )}
+        {prompt && (
+          <div style={{
+            fontSize: '0.55rem',
+            color: isToday ? '#d4b896' : '#b8a898',
+            marginTop: '0.3rem',
+            fontStyle: 'italic',
+            flexShrink: 0,
+          }}>
+            tap to read ›
           </div>
         )}
         {!prompt && (
@@ -120,7 +147,7 @@ export default function CalendarPage() {
         >
           <div
             onClick={e => e.stopPropagation()}
-            style={{ background: '#faf7f0', borderRadius: '16px', padding: '2rem', maxWidth: '480px', width: '100%', boxShadow: '0 8px 40px rgba(44,36,22,0.2)' }}
+            style={{ background: '#faf7f0', borderRadius: '16px', padding: '2rem', maxWidth: '480px', width: '100%', boxShadow: '0 8px 40px rgba(44,36,22,0.2)', maxHeight: '80vh', overflowY: 'auto' }}
           >
             <div style={{ fontSize: '0.7rem', fontWeight: 500, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#a07850', marginBottom: '0.5rem' }}>
               {new Date(selected.date + 'T00:00:00').toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
