@@ -2,10 +2,10 @@ export default function TeamPage() {
   const mission = "Pray Slovenia exists to mobilize believers around the world to intercede for the nation of Slovenia — one of the least evangelized countries in Europe. Through daily prayer, we believe God is moving in the hearts of the Slovenian people, and that a great awakening is coming to this beautiful alpine nation.";
 
   const team = [
-    { name: "The Manley Family", roles: ["Team Leaders","Church Planters"], photo: null },
+    { name: "The Manley Family", roles: ["Team Leaders","Church Planters"], photo: "/team/Manley.JPEG" },
     { name: "The Bell Family", roles: ["Church Planters"], photo: "/team/Bells.JPG" },
     { name: "The Brunstetter Family", roles: ["Church Planters", "Student Strategists"], photo: "/team/Brunstetter-Family.JPG" },
-    { name: "The Bates Family", roles: ["Church Planters"], photo: null },
+    { name: "The Bates Family", roles: ["Church Planters"], photo: "/team/bates.jpeg" },
     { name: "Josh Johnston", roles: ["Church Planter"], photo: "/team/Josh.JPG" },
   ];
 
