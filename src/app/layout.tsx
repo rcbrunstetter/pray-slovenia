@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -42,7 +43,7 @@ export default function RootLayout({
             { href: '/team', label: 'Our Team' },
             { href: '/give', label: 'Give' },
           ].map(({ href, label }) => (
-            <a key={href} href={href} style={{ color: '#f5f0e8', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '0.75rem 1.1rem', display: 'block' }}>{label}</a>
+            <Link key={href} href={href} style={{ color: '#f5f0e8', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '0.75rem 1.1rem', display: 'block' }}>{label}</Link>
           ))}
         </nav>
 

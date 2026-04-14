@@ -30,7 +30,6 @@ export async function POST(req: NextRequest) {
   if (existing) {
     const response = NextResponse.json({ ok: true, alreadyPrayed: true });
     response.cookies.set("device_id", deviceId, {
-      httpOnly: true,
       maxAge: 60 * 60 * 24 * 365,
       path: "/",
       sameSite: "lax",

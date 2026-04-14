@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createClientBrowser } from "@/lib/supabase-browser";
 
 type Prompt = { date: string; title: string; content: string; verse?: string | null; };
@@ -12,7 +12,7 @@ export default function TodayCard({
   prompt: Prompt | null;
   initialTotal: number;
 }) {
-  const supabase = createClientBrowser();
+  const supabase = useMemo(() => createClientBrowser(), []);
   const [total, setTotal] = useState(initialTotal);
   const [hasPrayed, setHasPrayed] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -34,14 +34,19 @@ export default function TodayCard({
 
   async function onPrayClick() {
     setLoading(true);
-    const res = await fetch("/api/pray", { method: "POST" });
-    const json = await res.json();
-    setLoading(false);
-    if (res.ok && json.ok) {
-      if (!json.alreadyPrayed) setTotal(t => t + 1);
-      setHasPrayed(true);
-    } else {
-      alert(json?.error ?? "Something went wrong.");
+    try {
+      const res = await fetch("/api/pray", { method: "POST" });
+      const json = await res.json();
+      if (res.ok && json.ok) {
+        if (!json.alreadyPrayed) setTotal(t => t + 1);
+        setHasPrayed(true);
+      } else {
+        alert(json?.error ?? "Something went wrong.");
+      }
+    } catch {
+      alert("Network error. Please try again.");
+    } finally {
+      setLoading(false);
     }
   }
 

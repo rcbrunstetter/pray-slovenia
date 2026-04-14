@@ -4,8 +4,8 @@ import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
 export default async function AdminPage() {
   const supabase = await createClientServer();
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) redirect("/admin/login");
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect("/admin/login");
 
   const today = new Date().toLocaleDateString("en-CA", { timeZone: "Europe/Ljubljana" });
   const firstOfMonth = today.slice(0, 7) + "-01";

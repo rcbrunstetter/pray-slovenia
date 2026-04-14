@@ -6,6 +6,9 @@ export async function POST(req: NextRequest) {
   const { isAdmin } = await requireAdmin();
   if (!isAdmin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const { date, title, content, verse } = await req.json();
+  if (!date || !title || !content) {
+    return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+  }
   const { error } = await supabaseAdmin.from("prayer_prompts").upsert({ date, title, content, verse: verse || null });
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
   return NextResponse.json({ ok: true });

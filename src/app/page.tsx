@@ -33,7 +33,9 @@ export default async function Home() {
       .order("created_at", { ascending: false })
       .limit(10);
     prayerRequests = requests ?? [];
-  } catch {}
+  } catch (err) {
+    console.error("Failed to load home page data:", err);
+  }
 
   return (
     <>
