@@ -14,8 +14,16 @@ export default function TodayCard({
 }) {
   const supabase = useMemo(() => createClientBrowser(), []);
   const [total, setTotal] = useState(initialTotal);
-  const [hasPrayed, setHasPrayed] = useState(false);
+  const [hasPrayed, setHasPrayed] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/pray").then(r => r.json()).then(json => {
+      setHasPrayed(!!json.hasPrayed);
+    }).catch(() => {
+      setHasPrayed(false);
+    });
+  }, []);
 
   useEffect(() => {
     const channel = supabase
@@ -23,7 +31,7 @@ export default function TodayCard({
       .on("postgres_changes", { event: "*", schema: "public", table: "daily_totals" },
         (payload) => {
           const row = payload.new as any;
-          if (row?.date === new Date().toLocaleDateString("en-CA", { timeZone: "Europe/Ljubljana" })) {
+          if (row?.date === new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" })) {
             setTotal(row.total ?? 0);
           }
         }
@@ -83,7 +91,9 @@ export default function TodayCard({
           &nbsp;{total === 1 ? 'person prayed' : 'people prayed'} today
         </div>
 
-        {hasPrayed ? (
+        {hasPrayed === null ? (
+          <span style={{ display: 'inline-block', width: '140px', height: '38px', borderRadius: '8px', background: '#e8e0d4' }} />
+        ) : hasPrayed === true ? (
           <span style={{ fontFamily: "'Lora', serif", fontStyle: 'italic', color: '#7a5c3a', fontSize: '0.95rem' }}>
             ✦ Thank you for praying
           </span>

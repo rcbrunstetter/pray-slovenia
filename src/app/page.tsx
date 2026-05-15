@@ -5,7 +5,7 @@ import NotificationPrompt from "@/components/NotificationPrompt";
 
 export default async function Home() {
   const supabase = await createClientServer();
-  const today = new Date().toLocaleDateString("en-CA", { timeZone: "Europe/Ljubljana" });
+  const today = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" });
 
   let prompt: any = null;
   let total = 0;

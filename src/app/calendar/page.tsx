@@ -12,7 +12,7 @@ export default function CalendarPage() {
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth());
 
-  const today = new Date().toLocaleDateString("en-CA", { timeZone: "Europe/Ljubljana" });
+  const today = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" });
 
   useEffect(() => {
     const firstDay = `${year}-${String(month + 1).padStart(2, '0')}-01`;

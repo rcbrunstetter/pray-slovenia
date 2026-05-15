@@ -1,12 +1,12 @@
 // src/app/api/pray/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
-import { todayInLjubljanaISO } from "@/lib/time";
+import { todayISO } from "@/lib/time";
 import { cookies } from "next/headers";
 import { v4 as uuidv4 } from "uuid";
 
 export async function POST(req: NextRequest) {
-  const today = todayInLjubljanaISO();
+  const today = todayISO();
 
   // Get or create a device_id cookie so anonymous users can only pray once/day
   const cookieStore = await cookies();
@@ -30,6 +30,7 @@ export async function POST(req: NextRequest) {
   if (existing) {
     const response = NextResponse.json({ ok: true, alreadyPrayed: true });
     response.cookies.set("device_id", deviceId, {
+      httpOnly: true,
       maxAge: 60 * 60 * 24 * 365,
       path: "/",
       sameSite: "lax",
@@ -55,4 +56,23 @@ export async function POST(req: NextRequest) {
     sameSite: "lax",
   });
   return response;
+}
+
+export async function GET() {
+  const today = todayISO();
+  const cookieStore = await cookies();
+  const deviceId = cookieStore.get("device_id")?.value;
+
+  if (!deviceId) {
+    return NextResponse.json({ hasPrayed: false });
+  }
+
+  const { data } = await supabaseAdmin
+    .from("prayer_events")
+    .select("id")
+    .eq("device_id", deviceId)
+    .eq("event_date", today)
+    .maybeSingle();
+
+  return NextResponse.json({ hasPrayed: !!data });
 }

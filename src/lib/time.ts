@@ -1,7 +1,7 @@
-export function todayInLjubljanaISO(): string {
+export function todayISO(): string {
   const now = new Date();
   const parts = new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'Europe/Ljubljana',
+    timeZone: 'America/New_York',
     year: 'numeric',
     month: '2-digit',
     day: '2-digit'

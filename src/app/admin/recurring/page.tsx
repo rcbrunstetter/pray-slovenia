@@ -11,6 +11,7 @@ export default function RecurringPage() {
   const router = useRouter();
   const [items, setItems] = useState<Recurring[]>([]);
   const [loading, setLoading] = useState(false);
+  const [msg, setMsg] = useState("");
   const [form, setForm] = useState({ day_of_month: '', title: '', content: '', verse: '' });
 
   useEffect(() => {
@@ -28,15 +29,23 @@ export default function RecurringPage() {
   async function handleAdd() {
     if (!form.day_of_month || !form.title || !form.content) return alert("Day, title and content are required.");
     setLoading(true);
+    setMsg("");
     const { data: { session } } = await supabase.auth.getSession();
-    await fetch("/api/admin/recurring", {
+    const res = await fetch("/api/admin/recurring", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...form, day_of_month: parseInt(form.day_of_month), user_id: session?.user.id }),
     });
-    setForm({ day_of_month: '', title: '', content: '', verse: '' });
-    fetchItems();
+    const json = await res.json();
     setLoading(false);
+    if (res.ok) {
+      setMsg("Saved!");
+      setForm({ day_of_month: '', title: '', content: '', verse: '' });
+      fetchItems();
+    } else {
+      console.error("recurring insert failed:", json);
+      setMsg(json?.error ?? "Error saving");
+    }
   }
 
   async function handleDelete(id: string) {
@@ -109,6 +118,7 @@ export default function RecurringPage() {
           />
         </div>
 
+        {msg && <div style={{ color: msg === 'Saved!' ? '#7a5c3a' : '#b85c38', fontSize: '0.9rem', marginBottom: '0.75rem' }}>{msg}</div>}
         <button
           onClick={handleAdd}
           disabled={loading}

@@ -7,10 +7,10 @@ export default async function AdminPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/admin/login");
 
-  const today = new Date().toLocaleDateString("en-CA", { timeZone: "Europe/Ljubljana" });
+  const today = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" });
   const firstOfMonth = today.slice(0, 7) + "-01";
   const lastOfMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0)
-    .toLocaleDateString("en-CA", { timeZone: "Europe/Ljubljana" });
+    .toLocaleDateString("en-CA", { timeZone: "America/New_York" });
 
   const [{ count: todayCount }, { count: monthCount }, { count: allCount }, { count: activeRequests }] = await Promise.all([
     supabaseAdmin.from("prayer_events").select("*", { count: "exact", head: true }).eq("event_date", today),
@@ -61,12 +61,15 @@ export default async function AdminPage() {
         ← View Public Site
       </a>
 
-      {/* Sign out */}
-      <form action="/api/admin/signout" method="POST" style={{ marginTop: '1rem' }}>
-        <button type="submit" style={{ background: 'none', border: 'none', color: '#9c8b75', fontSize: '0.85rem', cursor: 'pointer', textDecoration: 'underline' }}>
-          Sign out
-        </button>
-      </form>
+      {/* Account + Sign out */}
+      <div style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+        <a href="/admin/account" style={{ color: '#9c8b75', fontSize: '0.85rem', textDecoration: 'underline' }}>Account</a>
+        <form action="/api/admin/signout" method="POST">
+          <button type="submit" style={{ background: 'none', border: 'none', color: '#9c8b75', fontSize: '0.85rem', cursor: 'pointer', textDecoration: 'underline', padding: 0 }}>
+            Sign out
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
