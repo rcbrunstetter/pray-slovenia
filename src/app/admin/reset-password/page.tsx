@@ -18,15 +18,36 @@ export default function ResetPasswordPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Supabase exchanges the #access_token hash into a session automatically.
-    // We wait one tick then check whether a recovery session actually exists.
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session) {
-        setReady(true);
-      } else {
-        setInvalidLink(true);
-      }
-    });
+    const params = new URLSearchParams(window.location.search);
+    console.log("[reset-password] href:", window.location.href);
+    console.log("[reset-password] query params:", [...params.keys()]);
+
+    const code = params.get("code");
+    const tokenHash = params.get("token_hash");
+    const type = params.get("type");
+
+    if (code) {
+      supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
+        if (error) {
+          console.log("[reset-password] exchangeCodeForSession error:", error);
+          setInvalidLink(true);
+        } else {
+          setReady(true);
+        }
+      });
+    } else if (tokenHash && type === "recovery") {
+      supabase.auth.verifyOtp({ token_hash: tokenHash, type: "recovery" }).then(({ error }) => {
+        if (error) {
+          console.log("[reset-password] verifyOtp error:", error);
+          setInvalidLink(true);
+        } else {
+          setReady(true);
+        }
+      });
+    } else {
+      console.log("[reset-password] no code or token_hash found — invalid link");
+      setInvalidLink(true);
+    }
   }, []);
 
   async function onSubmit(e: React.FormEvent) {
