@@ -19,6 +19,16 @@ export default async function Home() {
       .maybeSingle();
     prompt = p ?? null;
 
+    if (!prompt) {
+      const dayOfMonth = parseInt(today.split("-")[2], 10);
+      const { data: recurring } = await supabase
+        .from("recurring_prompts")
+        .select("*")
+        .eq("day_of_month", dayOfMonth)
+        .maybeSingle();
+      prompt = recurring ?? null;
+    }
+
     const { data: totalRow } = await supabase
       .from("daily_totals")
       .select("*")

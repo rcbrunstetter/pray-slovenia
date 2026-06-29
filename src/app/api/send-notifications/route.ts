@@ -15,16 +15,36 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  // Guard: only send at 8 AM Eastern — whichever cron fires off-hour is a no-op
+  const easternHour = parseInt(
+    new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", hour: "numeric", hour12: false }).format(new Date()),
+    10
+  );
+  if (easternHour !== 8) {
+    return NextResponse.json({ ok: true, skipped: true });
+  }
+
   // Get today's prompt
-  const today = new Date().toLocaleDateString("en-CA", { timeZone: "Europe/Ljubljana" });
+  const today = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" });
   const { data: prompt } = await supabaseAdmin
     .from("prayer_prompts")
     .select("title, content")
     .eq("date", today)
     .maybeSingle();
 
+  let resolvedPrompt = prompt;
+  if (!resolvedPrompt) {
+    const dayOfMonth = parseInt(today.split("-")[2], 10);
+    const { data: recurring } = await supabaseAdmin
+      .from("recurring_prompts")
+      .select("title, content")
+      .eq("day_of_month", dayOfMonth)
+      .maybeSingle();
+    resolvedPrompt = recurring ?? null;
+  }
+
   const title = "Pray Slovenia 🙏";
-  const body = prompt ? `Today: ${prompt.title}` : "Time to pray for Slovenia today.";
+  const body = resolvedPrompt ? `Today: ${resolvedPrompt.title}` : "Time to pray for Slovenia today.";
 
   // Get all active subscriptions
   const { data: subscriptions } = await supabaseAdmin
