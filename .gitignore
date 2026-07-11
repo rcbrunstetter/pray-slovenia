@@ -44,6 +44,8 @@ next-env.d.ts
 service-account.json
 fcm-test.mjs
 auth-test.mjs
+android/.idea/
+fcm-curl-test.sh
 
 # Firebase config (contains API keys)
 ios/App/App/GoogleService-Info.plist
