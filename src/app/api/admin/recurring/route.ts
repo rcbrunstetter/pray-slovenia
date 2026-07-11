@@ -3,13 +3,13 @@ import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { requireAdmin } from "@/lib/admin";
 
 export async function POST(req: NextRequest) {
-  const { isAdmin } = await requireAdmin();
+  const { isAdmin, user } = await requireAdmin();
   if (!isAdmin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const { day_of_month, title, content, verse, user_id } = await req.json();
+  const { day_of_month, title, content, verse } = await req.json();
   if (!day_of_month || !title || !content) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
   }
-  const { error } = await supabaseAdmin.from("recurring_prompts").insert({ day_of_month, title, content, verse: verse || null, created_by: user_id });
+  const { error } = await supabaseAdmin.from("recurring_prompts").insert({ day_of_month, title, content, verse: verse || null, created_by: user?.id });
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
   return NextResponse.json({ ok: true });
 }

@@ -30,11 +30,10 @@ export default function RecurringPage() {
     if (!form.day_of_month || !form.title || !form.content) return alert("Day, title and content are required.");
     setLoading(true);
     setMsg("");
-    const { data: { session } } = await supabase.auth.getSession();
     const res = await fetch("/api/admin/recurring", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, day_of_month: parseInt(form.day_of_month), user_id: session?.user.id }),
+      body: JSON.stringify({ ...form, day_of_month: parseInt(form.day_of_month) }),
     });
     const json = await res.json();
     setLoading(false);

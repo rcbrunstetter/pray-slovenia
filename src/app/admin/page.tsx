@@ -1,11 +1,10 @@
-import { createClientServer } from "@/lib/supabase-server";
 import { redirect } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { requireAdmin } from "@/lib/admin";
 
 export default async function AdminPage() {
-  const supabase = await createClientServer();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/admin/login");
+  const { isAdmin } = await requireAdmin();
+  if (!isAdmin) redirect("/admin/login");
 
   const today = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" });
   const firstOfMonth = today.slice(0, 7) + "-01";
