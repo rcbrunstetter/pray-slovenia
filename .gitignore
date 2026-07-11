@@ -39,3 +39,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# throwaway scripts and credentials — never commit
+service-account.json
+fcm-test.mjs
+auth-test.mjs
+
+# Firebase config (contains API keys)
+ios/App/App/GoogleService-Info.plist
+
+# empty sentinel file
+/main
