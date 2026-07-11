@@ -37,11 +37,15 @@ export default function AdminLogin() {
     }
     setResetLoading(true);
     setError("");
-    await supabase.auth.resetPasswordForEmail(email, {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/admin/reset-password`,
     });
     setResetLoading(false);
-    setResetSent(true);
+    if (error) {
+      setError(error.message);
+    } else {
+      setResetSent(true);
+    }
   }
 
   return (

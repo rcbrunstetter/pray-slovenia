@@ -24,6 +24,11 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   const { endpoint } = await req.json();
-  await supabaseAdmin.from("push_subscriptions").update({ active: false }).eq("endpoint", endpoint);
+  if (!endpoint) return NextResponse.json({ error: "Missing endpoint" }, { status: 400 });
+  const { error } = await supabaseAdmin
+    .from("push_subscriptions")
+    .update({ active: false })
+    .eq("endpoint", endpoint);
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ ok: true });
 }

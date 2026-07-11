@@ -37,6 +37,8 @@ export default function CalendarPage() {
       });
 
       setPrompts(merged);
+    }).catch((err) => {
+      console.error("Failed to load calendar prompts:", err);
     });
   }, [year, month, supabase]);
 
