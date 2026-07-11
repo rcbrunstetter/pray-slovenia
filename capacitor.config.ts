@@ -8,6 +8,13 @@ const config: CapacitorConfig = {
     url: 'https://pray-slovenia.vercel.app',
     cleartext: false,
   },
+  plugins: {
+    SplashScreen: {
+      launchShowDuration: 2000,
+      launchAutoHide: false,
+      backgroundColor: '#f5f0e8',
+    },
+  },
 };
 
 export default config;

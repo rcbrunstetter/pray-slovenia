@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import "./globals.css";
+import SplashHider from "./splash-hider";
 
 export const metadata: Metadata = {
   title: "Pray Slovenia",
@@ -28,6 +29,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-title" content="Pray Slovenia" />
       </head>
       <body style={{ backgroundColor: '#f5f0e8', color: '#2c2416', fontFamily: "'Source Sans 3', sans-serif", lineHeight: '1.7', minHeight: '100vh', margin: 0, padding: 0 }}>
+        <SplashHider />
         <header style={{ position: 'relative', background: 'linear-gradient(180deg, #c8b89a 0%, #b8a882 40%, #a89470 100%)', padding: '3rem 1.5rem 5rem', overflow: 'hidden', textAlign: 'center' }}>
           <svg style={{ position: 'absolute', bottom: 0, left: 0, right: 0, width: '100%', opacity: 0.25 }} viewBox="0 0 1440 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0,160 L0,100 L80,60 L160,90 L260,30 L360,80 L420,50 L500,85 L580,20 L680,70 L760,40 L840,75 L920,15 L1020,65 L1100,35 L1180,70 L1260,45 L1360,80 L1440,55 L1440,160 Z" fill="#2c2416"/>

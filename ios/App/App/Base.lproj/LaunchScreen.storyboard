@@ -11,11 +11,31 @@
         <scene sceneID="EHf-IW-A2E">
             <objects>
                 <viewController id="01J-lp-oVM" sceneMemberID="viewController">
-                    <imageView key="view" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Splash" id="snD-IY-ifK">
+                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </imageView>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Splash" id="imgV-sp-logo">
+                                <rect key="frame" x="127.5" y="243.5" width="120" height="120"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Laying the foundation for God's work in Slovenia" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" id="lbl-sp-tag">
+                                <rect key="frame" x="32" y="379.5" width="311" height="60"/>
+                                <fontDescription key="fontDescription" name="Georgia-Italic" family="Georgia" pointSize="15"/>
+                                <color key="textColor" red="0.17255" green="0.14118" blue="0.08627" alpha="1" colorSpace="calibratedRGB"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.96078" green="0.94118" blue="0.90980" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="imgV-sp-logo" firstAttribute="width" constant="120" id="c-img-w"/>
+                            <constraint firstItem="imgV-sp-logo" firstAttribute="height" constant="120" id="c-img-h"/>
+                            <constraint firstItem="imgV-sp-logo" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="c-img-cx"/>
+                            <constraint firstItem="imgV-sp-logo" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="-30" id="c-img-cy"/>
+                            <constraint firstItem="lbl-sp-tag" firstAttribute="top" secondItem="imgV-sp-logo" secondAttribute="bottom" constant="16" id="c-lbl-top"/>
+                            <constraint firstItem="lbl-sp-tag" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="c-lbl-cx"/>
+                            <constraint firstItem="lbl-sp-tag" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="32" id="c-lbl-lead"/>
+                            <constraint firstItem="Ze5-6b-2t3" firstAttribute="trailing" secondItem="lbl-sp-tag" secondAttribute="trailing" constant="32" id="c-lbl-trail"/>
+                        </constraints>
+                    </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -23,6 +43,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Splash" width="512" height="512"/>
+        <image name="Splash" width="120" height="120"/>
     </resources>
 </document>
