@@ -23,7 +23,7 @@ export default function PageShell({
 }) {
   return (
     <>
-      <header className="relative overflow-hidden bg-night px-6 pt-[calc(max(env(safe-area-inset-top),1.25rem)+1.5rem)] pb-[58px] text-center text-ivory">
+      <header className="relative overflow-hidden bg-night px-6 pt-[calc(max(var(--safe-top),1.25rem)+1.5rem)] pb-[58px] text-center text-ivory">
         <SloveniaOutline className="pointer-events-none absolute top-[calc(50%-11px)] left-1/2 w-[190px] -translate-x-1/2 -translate-y-1/2 opacity-60" />
         {back && (
           <div className="relative mx-auto mb-3 max-w-[632px] text-left">

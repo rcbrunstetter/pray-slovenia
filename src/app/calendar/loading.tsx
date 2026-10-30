@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui";
 export default function Loading() {
   return (
     <>
-      <section className="bg-night px-5 pt-[calc(max(env(safe-area-inset-top),1.25rem)+0.5rem)] pb-[42px]">
+      <section className="bg-night px-5 pt-[calc(max(var(--safe-top),1.25rem)+0.5rem)] pb-[42px]">
         <div className="mx-auto aspect-[7/7.6] w-full max-w-[420px]" />
       </section>
       <Sheet>

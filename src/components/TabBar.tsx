@@ -48,7 +48,7 @@ export default function TabBar() {
   return (
     <nav
       aria-label="Main"
-      className="fixed inset-x-0 bottom-0 z-50 h-(--tabbar) border-t border-tab-line bg-night pb-[max(env(safe-area-inset-bottom),0.5rem)] font-sans md:sticky md:top-0 md:bottom-auto md:h-16 md:border-t-0 md:border-b md:border-dock-line md:pb-0"
+      className="fixed inset-x-0 bottom-0 z-50 h-(--tabbar) border-t border-tab-line bg-night pb-[max(var(--safe-bottom),0.5rem)] font-sans md:sticky md:top-0 md:bottom-auto md:h-16 md:border-t-0 md:border-b md:border-dock-line md:pb-0"
     >
       <div className="mx-auto flex h-full max-w-[1040px] items-center md:justify-between md:px-8">
         <Link href="/" className="hidden font-serif text-[22px] text-ivory md:block">

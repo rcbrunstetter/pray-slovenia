@@ -84,7 +84,7 @@ export default function CalendarView({
 
   return (
     <>
-      <section className="bg-night px-5 pt-[calc(max(env(safe-area-inset-top),1.25rem)+0.5rem)] pb-[42px] text-ivory">
+      <section className="bg-night px-5 pt-[calc(max(var(--safe-top),1.25rem)+0.5rem)] pb-[42px] text-ivory">
         <div className="mx-auto flex max-w-[420px] flex-col gap-3">
           <div className="flex items-center justify-between">
             <MonthArrow direction="Previous" onClick={() => goTo(shiftMonth(month, -1))} />

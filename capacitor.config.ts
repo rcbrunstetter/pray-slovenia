@@ -19,6 +19,10 @@ const config: CapacitorConfig = {
     StatusBar: {
       style: 'DARK',
     },
+    // Android runs this too, and it would otherwise override StatusBar.
+    SystemBars: {
+      style: 'DARK',
+    },
   },
 };
 

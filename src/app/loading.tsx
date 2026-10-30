@@ -5,7 +5,7 @@ import { Skeleton } from "@/components/ui";
 export default function Loading() {
   return (
     <>
-      <section className="bg-night px-6 pt-[calc(max(env(safe-area-inset-top),1.25rem)+0.875rem)] pb-[46px]">
+      <section className="bg-night px-6 pt-[calc(max(var(--safe-top),1.25rem)+0.875rem)] pb-[46px]">
         <div className="mx-auto flex max-w-[632px] flex-col gap-3.5">
           <div className="h-[19.5px]" />
           <SloveniaOutline className="mx-auto block aspect-[341/222] w-full max-w-[339px]" />

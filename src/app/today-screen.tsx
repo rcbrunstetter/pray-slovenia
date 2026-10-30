@@ -72,7 +72,7 @@ export default function TodayScreen({
   return (
     <>
       <h1 className="sr-only">Pray Slovenia</h1>
-      <section className="bg-night px-6 pt-[calc(max(env(safe-area-inset-top),1.25rem)+0.875rem)] pb-[46px] text-ivory">
+      <section className="bg-night px-6 pt-[calc(max(var(--safe-top),1.25rem)+0.875rem)] pb-[46px] text-ivory">
         <div className="mx-auto flex max-w-[632px] flex-col gap-3.5">
           <div className="font-sans text-[13px] font-semibold tracking-[0.08em] text-mist">{dateLabel}</div>
           <SloveniaLights count={total} />
