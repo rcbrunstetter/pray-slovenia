@@ -1,1 +1,100 @@
 @import "tailwindcss";
+
+@theme inline {
+  --font-serif: var(--font-newsreader), Georgia, serif;
+  --font-sans: var(--font-figtree), system-ui, sans-serif;
+
+  /* The hero, dock and tab bar stay night in both modes. */
+  --color-night: #0c1322;
+  --color-ivory: #f3eee3;
+  --color-gold: #f4c977;
+  --color-mist: #c4cbd8;
+  --color-dock-line: #27314a;
+  --color-tab-line: #1b2439;
+
+  /* The reading page follows the phone's light or dark setting. */
+  --color-sheet: var(--sheet);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-prayer: var(--prayer);
+  --color-update: var(--update);
+  --color-label: var(--label);
+  --color-meta: var(--meta);
+  --color-card: var(--card);
+  --color-card-line: var(--card-line);
+  --color-urgent: var(--urgent);
+}
+
+:root {
+  color-scheme: light dark;
+  --tabbar: calc(3.25rem + max(env(safe-area-inset-bottom), 0.5rem));
+
+  --sheet: #fdfaf3;
+  --ink: #1b2233;
+  --ink-soft: #4a5468;
+  --prayer: #1b2233;
+  --update: #2a3142;
+  --label: #8a5a0b;
+  --meta: #4a5468;
+  --card: #ffffff;
+  --card-line: #e8e1d2;
+  --urgent: #a8361a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --sheet: #0c1322;
+    --ink: #f3eee3;
+    --ink-soft: #c9cfdb;
+    --prayer: #e9e5db;
+    --update: #d5d8e0;
+    --label: #f4c977;
+    --meta: #a9b2c3;
+    --card: #151e33;
+    --card-line: #27314a;
+    --urgent: #ffb59e;
+  }
+}
+
+@layer base {
+  body {
+    @apply min-h-dvh bg-night pb-(--tabbar) font-serif text-ivory antialiased md:pb-0;
+  }
+}
+
+.light {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  border-radius: 50%;
+  background: #ffefcf;
+  box-shadow: 0 0 7px 2px rgba(244, 201, 119, 0.95), 0 0 26px 10px rgba(244, 201, 119, 0.34);
+  animation: breathe 4.2s ease-in-out infinite;
+}
+
+.light-new {
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  background: #fff6e2;
+  box-shadow: 0 0 8px 3px rgba(255, 224, 166, 1), 0 0 32px 13px rgba(244, 201, 119, 0.5);
+  animation: new-light 1.4s ease-out both;
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.82; }
+  50% { opacity: 1; }
+}
+
+@keyframes new-light {
+  0% { transform: scale(0); opacity: 0; }
+  45% { transform: scale(2.6); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .light {
+    animation: none;
+  }
+}

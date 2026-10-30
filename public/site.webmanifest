@@ -4,8 +4,8 @@
   "description": "Join believers around the world in praying for Slovenia.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f5f0e8",
-  "theme_color": "#7a5c3a",
+  "background_color": "#0C1322",
+  "theme_color": "#0C1322",
   "orientation": "portrait",
   "icons": [
     {

@@ -46,74 +46,28 @@ export default function NotificationPrompt() {
   if (!show && !showConfirm) return null;
 
   if (showConfirm) return (
-    <div style={{
-      textAlign: 'center',
-      padding: '0.75rem',
-      background: '#f5efe3',
-      borderRadius: '10px',
-      marginBottom: '1.5rem',
-      fontSize: '0.85rem',
-      color: '#7a5c3a',
-      fontFamily: "'Lora', serif",
-      fontStyle: 'italic'
-    }}>
-      ✦ You'll receive daily prayer reminders at 8am
-    </div>
+    <p role="status" className="text-center text-[19px] leading-[1.48] text-label italic">
+      You’ll receive daily prayer reminders at 8am
+    </p>
   );
 
   return (
-    <div style={{
-      background: '#faf7f0',
-      border: '1px solid #d4c4a8',
-      borderRadius: '12px',
-      padding: '1.25rem 1.5rem',
-      marginBottom: '1.5rem',
-      boxShadow: '0 2px 12px rgba(44,36,22,0.07)'
-    }}>
-      <div style={{
-        fontFamily: "'Lora', serif",
-        fontWeight: 500,
-        color: '#2c2416',
-        marginBottom: '0.3rem'
-      }}>
-        Get daily prayer reminders
-      </div>
-      <div style={{
-        fontSize: '0.85rem',
-        color: '#9c8b75',
-        marginBottom: '1rem'
-      }}>
+    <div className="flex flex-col gap-1.5 rounded-[14px] border border-card-line bg-card p-[18px]">
+      <div className="text-[22px] leading-[1.22] font-medium dark:font-normal">Get daily prayer reminders</div>
+      <div className="text-[19px] leading-[1.48] text-update">
         Receive a notification at 8am each day to pray for Slovenia.
       </div>
-      <div style={{ display: 'flex', gap: '0.75rem' }}>
+      <div className="mt-2.5 flex gap-2.5 font-sans">
         <button
           onClick={subscribe}
           disabled={loading}
-          style={{
-            background: '#7a5c3a',
-            color: '#faf7f0',
-            border: 'none',
-            borderRadius: '8px',
-            padding: '0.6rem 1.25rem',
-            fontSize: '0.85rem',
-            fontWeight: 500,
-            cursor: loading ? 'not-allowed' : 'pointer',
-            opacity: loading ? 0.6 : 1
-          }}
+          className="h-11 cursor-pointer rounded-full bg-gold px-5 text-[15px] font-semibold text-night disabled:cursor-not-allowed disabled:opacity-60"
         >
           {loading ? "Setting up..." : "Yes, remind me"}
         </button>
         <button
           onClick={() => setShow(false)}
-          style={{
-            background: 'none',
-            border: '1px solid #d9cfc0',
-            borderRadius: '8px',
-            padding: '0.6rem 1.25rem',
-            fontSize: '0.85rem',
-            color: '#9c8b75',
-            cursor: 'pointer'
-          }}
+          className="h-11 cursor-pointer rounded-full border border-card-line px-5 text-[15px] font-medium text-ink-soft"
         >
           No thanks
         </button>
