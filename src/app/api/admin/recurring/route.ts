@@ -9,7 +9,26 @@ export async function POST(req: NextRequest) {
   if (!day_of_month || !title || !content) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
   }
-  const { error } = await supabaseAdmin.from("recurring_prompts").insert({ day_of_month, title, content, verse: verse || null, created_by: user?.id });
+  const { data, error } = await supabaseAdmin
+    .from("recurring_prompts")
+    .insert({ day_of_month, title, content, verse: verse || null, created_by: user?.id })
+    .select()
+    .single();
+  if (error) return NextResponse.json({ error: error.message }, { status: 400 });
+  return NextResponse.json({ ok: true, data });
+}
+
+export async function PATCH(req: NextRequest) {
+  const { isAdmin } = await requireAdmin();
+  if (!isAdmin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const { id, day_of_month, title, content, verse } = await req.json();
+  if (!id || !day_of_month || !title || !content) {
+    return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+  }
+  const { error } = await supabaseAdmin
+    .from("recurring_prompts")
+    .update({ day_of_month, title, content, verse: verse || null })
+    .eq("id", id);
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
   return NextResponse.json({ ok: true });
 }

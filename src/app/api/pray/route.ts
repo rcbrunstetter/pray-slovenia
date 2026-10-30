@@ -1,11 +1,11 @@
 // src/app/api/pray/route.ts
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { todayISO } from "@/lib/time";
 import { cookies } from "next/headers";
 import { v4 as uuidv4 } from "uuid";
 
-export async function POST(req: NextRequest) {
+export async function POST() {
   const today = todayISO();
 
   // Get or create a device_id cookie so anonymous users can only pray once/day

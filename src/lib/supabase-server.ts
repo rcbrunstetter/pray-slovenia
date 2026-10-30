@@ -1,5 +1,5 @@
 import "server-only";
-import { createServerClient, type CookieOptions } from "@supabase/ssr";
+import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
 export const createClientServer = async () => {
@@ -10,12 +10,16 @@ export const createClientServer = async () => {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
+        getAll() {
+          return cookieStore.getAll();
         },
-        // no-ops in Server Component context
-        set(_n: string, _v: string, _o: CookieOptions) {},
-        remove(_n: string, _o: CookieOptions) {},
+        setAll(cookiesToSet) {
+          try {
+            cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options));
+          } catch {
+            // Server Components can't set cookies; proxy.ts keeps the session fresh instead.
+          }
+        },
       },
     }
   );

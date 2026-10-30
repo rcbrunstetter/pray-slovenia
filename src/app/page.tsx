@@ -1,63 +1,54 @@
-import { createClientServer } from "@/lib/supabase-server";
+import { cookies } from "next/headers";
 import TodayScreen from "./today-screen";
 import NotificationPrompt from "@/components/NotificationPrompt";
+import { SectionTitle } from "@/components/ui";
+import type { PrayerRequest, Prompt } from "@/lib/prompts";
+import { createClientServer } from "@/lib/supabase-server";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { formatDate, todayISO } from "@/lib/time";
 
 export default async function Home() {
   const supabase = await createClientServer();
-  const today = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" });
-  const dateLabel = new Date().toLocaleDateString("en-US", {
-    timeZone: "America/New_York",
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-  });
+  const today = todayISO();
+  const dayOfMonth = parseInt(today.split("-")[2], 10);
+  const deviceId = (await cookies()).get("device_id")?.value;
 
-  let prompt: any = null;
+  let prompt: Prompt | null = null;
   let total = 0;
-  let prayerRequests: any[] = [];
+  let prayerRequests: PrayerRequest[] = [];
+  let hasPrayed = false;
 
   try {
-    const { data: p } = await supabase
-      .from("prayer_prompts")
-      .select("*")
-      .eq("date", today)
-      .maybeSingle();
-    prompt = p ?? null;
-
-    if (!prompt) {
-      const dayOfMonth = parseInt(today.split("-")[2], 10);
-      const { data: recurring } = await supabase
-        .from("recurring_prompts")
-        .select("*")
-        .eq("day_of_month", dayOfMonth)
-        .maybeSingle();
-      prompt = recurring ?? null;
-    }
-
-    const { data: totalRow } = await supabase
-      .from("daily_totals")
-      .select("*")
-      .eq("date", today)
-      .maybeSingle();
+    const [{ data: manual }, { data: recurring }, { data: totalRow }, { data: requests }, { data: prayed }] = await Promise.all([
+      supabase.from("prayer_prompts").select("*").eq("date", today).maybeSingle(),
+      supabase.from("recurring_prompts").select("*").eq("day_of_month", dayOfMonth).limit(1).maybeSingle(),
+      supabase.from("daily_totals").select("*").eq("date", today).maybeSingle(),
+      supabase.from("prayer_requests").select("*").eq("is_active", true).order("created_at", { ascending: false }).limit(10),
+      deviceId
+        ? supabaseAdmin.from("prayer_events").select("id").eq("device_id", deviceId).eq("event_date", today).maybeSingle()
+        : Promise.resolve({ data: null }),
+    ]);
+    prompt = manual ?? recurring ?? null;
     total = totalRow?.total ?? 0;
-
-    const { data: requests } = await supabase
-      .from("prayer_requests")
-      .select("*")
-      .eq("is_active", true)
-      .order("created_at", { ascending: false })
-      .limit(10);
     prayerRequests = requests ?? [];
+    hasPrayed = !!prayed;
   } catch (err) {
     console.error("Failed to load home page data:", err);
   }
 
   return (
-    <TodayScreen prompt={prompt} initialTotal={total} dateLabel={dateLabel}>
+    <TodayScreen
+      key={today}
+      date={today}
+      dateLabel={formatDate(today, { weekday: "long", month: "long", day: "numeric" })}
+      prompt={prompt}
+      initialTotal={total}
+      initialHasPrayed={hasPrayed}
+    >
       <NotificationPrompt />
 
       <section className="flex flex-col gap-3">
-        <h2 className="text-[28px] leading-[1.15] font-medium dark:font-normal">Live Updates</h2>
+        <SectionTitle>Live Updates</SectionTitle>
         {prayerRequests.length > 0 ? (
           prayerRequests.map((req) => (
             <div

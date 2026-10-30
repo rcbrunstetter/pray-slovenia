@@ -1,16 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { cookies } from "next/headers";
 
 export async function POST(req: NextRequest) {
-  const { subscription, device_id } = await req.json();
+  const { subscription } = await req.json();
   if (!subscription?.endpoint || !subscription?.keys?.p256dh || !subscription?.keys?.auth) {
     return NextResponse.json({ error: "Invalid subscription" }, { status: 400 });
   }
 
+  // The device cookie is httpOnly, so only the server can read it.
+  const cookieStore = await cookies();
+
   const { error } = await supabaseAdmin
     .from("push_subscriptions")
     .upsert({
-      device_id,
+      device_id: cookieStore.get("device_id")?.value,
       endpoint: subscription.endpoint,
       p256dh: subscription.keys.p256dh,
       auth: subscription.keys.auth,

@@ -1,52 +1,56 @@
+import type { Metadata } from "next";
+import Image from "next/image";
+import PageShell from "@/components/PageShell";
+import { Eyebrow, SectionTitle } from "@/components/ui";
+import bates from "./photos/bates.jpg";
+import bell from "./photos/bell.jpg";
+import brunstetter from "./photos/brunstetter.jpg";
+import josh from "./photos/josh.jpg";
+import manley from "./photos/manley.jpg";
+
+export const metadata: Metadata = { title: "Our Team" };
+
+const team = [
+  { name: "The Manley Family", roles: ["Team Leaders", "Church Planters"], photo: manley, focus: "50% 60%" },
+  { name: "The Bell Family", roles: ["Church Planters"], photo: bell, focus: "50% 22%" },
+  { name: "The Brunstetter Family", roles: ["Church Planters", "Student Strategists"], photo: brunstetter, focus: "50% 40%" },
+  { name: "The Bates Family", roles: ["Church Planters"], photo: bates, focus: "50% 50%" },
+  { name: "Josh Johnston", roles: ["Church Planter"], photo: josh, focus: "50% 12%" },
+];
+
 export default function TeamPage() {
-  const mission = "Pray Slovenia exists to mobilize believers around the world to intercede for the nation of Slovenia — one of the least evangelized countries in Europe. Through daily prayer, we believe God is moving in the hearts of the Slovenian people, and that a great awakening is coming to this beautiful alpine nation.";
-
-  const team = [
-    { name: "The Manley Family", roles: ["Team Leaders","Church Planters"], photo: "/team/Manley.JPEG" },
-    { name: "The Bell Family", roles: ["Church Planters"], photo: "/team/Bells.JPG" },
-    { name: "The Brunstetter Family", roles: ["Church Planters", "Student Strategists"], photo: "/team/Brunstetter-Family.JPG" },
-    { name: "The Bates Family", roles: ["Church Planters"], photo: "/team/bates.jpeg" },
-    { name: "Josh Johnston", roles: ["Church Planter"], photo: "/team/Josh.JPG" },
-  ];
-
   return (
-    <div>
-      <div style={{ background: 'linear-gradient(135deg, #faf7f0 0%, #f5efe3 100%)', border: '1px solid #d4c4a8', borderRadius: '16px', padding: '2rem', marginBottom: '2.5rem', boxShadow: '0 4px 24px rgba(44,36,22,0.07)' }}>
-        <div style={{ fontSize: '0.7rem', fontWeight: 500, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#a07850', marginBottom: '0.75rem' }}>Our Mission</div>
-        <p style={{ fontFamily: "'Lora', serif", fontSize: '1.05rem', color: '#2c2416', lineHeight: 1.8, margin: 0, fontStyle: 'italic' }}>
-          "{mission}"
+    <PageShell title="Our Team">
+      <section className="flex flex-col gap-3">
+        <Eyebrow>Our Mission</Eyebrow>
+        <p className="text-[22px] leading-[1.5] text-pretty text-prayer">
+          Pray Slovenia exists to mobilize believers around the world to intercede for the nation of Slovenia — one of
+          the least evangelized countries in Europe. Through daily prayer, we believe God is moving in the hearts of the
+          Slovenian people, and that a great awakening is coming to this beautiful alpine nation.
         </p>
-      </div>
+      </section>
 
-      <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.4rem', fontWeight: 600, color: '#2c2416', marginBottom: '1.5rem', textAlign: 'center' }}>
-        Meet the Team
-      </h2>
-
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
-        {team.map((member, index) => (
-          <div key={index} style={{ background: '#faf7f2', border: '1px solid #d9cfc0', borderRadius: '14px', overflow: 'hidden', textAlign: 'center' }}>
-            {member.photo ? (
-              <img
-                src={member.photo}
-                alt={member.name}
-                style={{ width: '100%', height: '180px', objectFit: 'cover', display: 'block' }}
+      <section className="flex flex-col gap-3">
+        <SectionTitle>Meet the Team</SectionTitle>
+        <div className="grid gap-3 sm:grid-cols-2">
+          {team.map(({ name, roles, photo, focus }) => (
+            <article key={name} className="overflow-hidden rounded-[14px] border border-card-line bg-card">
+              <Image
+                src={photo}
+                alt={name}
+                placeholder="blur"
+                sizes="(min-width: 640px) 310px, calc(100vw - 48px)"
+                className="aspect-[4/3] w-full object-cover"
+                style={{ objectPosition: focus }}
               />
-            ) : (
-              <div style={{ width: '100%', height: '180px', background: 'linear-gradient(135deg, #c49a6c, #7a5c3a)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem', color: '#faf7f0', fontFamily: "'Playfair Display', serif", fontWeight: 700 }}>
-                {member.name.charAt(0)}
+              <div className="flex flex-col gap-1 p-[18px]">
+                <h3 className="text-[22px] leading-[1.22] font-medium dark:font-normal">{name}</h3>
+                <p className="font-sans text-[13px] font-medium text-meta">{roles.join(" · ")}</p>
               </div>
-            )}
-            <div style={{ padding: '1rem' }}>
-              <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, fontSize: '0.95rem', color: '#2c2416', marginBottom: '0.4rem' }}>{member.name}</div>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.3rem', justifyContent: 'center' }}>
-                {member.roles.map((role, i) => (
-                  <span key={i} style={{ fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.07em', textTransform: 'uppercase', color: '#faf7f0', background: '#a07850', borderRadius: '4px', padding: '0.15rem 0.5rem' }}>{role}</span>
-                ))}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
+            </article>
+          ))}
+        </div>
+      </section>
+    </PageShell>
   );
 }

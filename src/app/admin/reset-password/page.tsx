@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { createClientBrowser } from "@/lib/supabase-browser";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-
-const inputStyle = { width: '100%', padding: '0.65rem 0.9rem', border: '1px solid #d9cfc0', borderRadius: '8px', fontSize: '0.95rem', background: '#fff', color: '#2c2416', outline: 'none', boxSizing: 'border-box' as const };
-const labelStyle = { display: 'block' as const, fontSize: '0.8rem', fontWeight: 500 as const, color: '#6b5c45', marginBottom: '0.4rem', letterSpacing: '0.05em', textTransform: 'uppercase' as const };
+import { type FormEvent, useEffect, useMemo, useState } from "react";
+import PageShell from "@/components/PageShell";
+import { Button, Field, inputClass, Notice, Skeleton } from "@/components/ui";
+import { createClientBrowser } from "@/lib/supabase-browser";
 
 export default function ResetPasswordPage() {
-  const supabase = createClientBrowser();
+  const supabase = useMemo(() => createClientBrowser(), []);
   const router = useRouter();
   const [ready, setReady] = useState(false);
   const [invalidLink, setInvalidLink] = useState(false);
@@ -18,39 +18,31 @@ export default function ResetPasswordPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    console.log("[reset-password] href:", window.location.href);
-    console.log("[reset-password] query params:", [...params.keys()]);
+    async function checkLink() {
+      // The Supabase client uses up a ?code= link by itself as it starts, so
+      // look for the session it made rather than exchanging the code again.
+      const { data } = await supabase.auth.getSession();
+      if (data.session) {
+        setReady(true);
+        return;
+      }
 
-    const code = params.get("code");
-    const tokenHash = params.get("token_hash");
-    const type = params.get("type");
-
-    if (code) {
-      supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
-        if (error) {
-          console.log("[reset-password] exchangeCodeForSession error:", error);
-          setInvalidLink(true);
-        } else {
+      const params = new URLSearchParams(window.location.search);
+      const tokenHash = params.get("token_hash");
+      if (tokenHash && params.get("type") === "recovery") {
+        const { error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type: "recovery" });
+        if (!error) {
           setReady(true);
+          return;
         }
-      });
-    } else if (tokenHash && type === "recovery") {
-      supabase.auth.verifyOtp({ token_hash: tokenHash, type: "recovery" }).then(({ error }) => {
-        if (error) {
-          console.log("[reset-password] verifyOtp error:", error);
-          setInvalidLink(true);
-        } else {
-          setReady(true);
-        }
-      });
-    } else {
-      console.log("[reset-password] no code or token_hash found — invalid link");
+      }
       setInvalidLink(true);
     }
-  }, []);
 
-  async function onSubmit(e: React.FormEvent) {
+    checkLink();
+  }, [supabase]);
+
+  async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setError("");
 
@@ -70,58 +62,50 @@ export default function ResetPasswordPage() {
     if (error) {
       setError(error.message);
     } else {
-      router.push("/admin");
+      router.replace("/admin");
+      router.refresh();
     }
   }
 
   return (
-    <div style={{ maxWidth: '400px', margin: '4rem auto', padding: '2rem', background: '#faf7f2', border: '1px solid #d9cfc0', borderRadius: '16px', boxShadow: '0 4px 24px rgba(44,36,22,0.08)' }}>
-      <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.8rem', fontWeight: 600, color: '#2c2416', marginBottom: '0.25rem' }}>Set New Password</h1>
-      <p style={{ color: '#9c8b75', fontSize: '0.9rem', marginBottom: '1.5rem' }}>Pray Slovenia team access</p>
-
+    <PageShell title="Set New Password" subtitle="Pray Slovenia team access">
       {invalidLink && (
-        <div style={{ background: '#fdf5f2', border: '1px solid #b85c38', borderRadius: '8px', padding: '0.75rem 1rem', color: '#b85c38', fontSize: '0.9rem' }}>
-          This link is invalid or has expired.{' '}
-          <a href="/admin/login" style={{ color: '#b85c38', fontWeight: 500 }}>Request a new one.</a>
-        </div>
+        <Notice>
+          This link is invalid or has expired.{" "}
+          <Link href="/admin/login" className="underline underline-offset-4">Request a new one.</Link>
+        </Notice>
       )}
 
+      {!ready && !invalidLink && <Skeleton className="h-40 w-full rounded-[14px]" />}
+
       {ready && (
-        <form onSubmit={onSubmit}>
-          {error && (
-            <div style={{ background: '#fdf5f2', border: '1px solid #b85c38', borderRadius: '8px', padding: '0.75rem 1rem', color: '#b85c38', fontSize: '0.9rem', marginBottom: '1rem' }}>
-              {error}
-            </div>
-          )}
-          <div style={{ marginBottom: '1rem' }}>
-            <label style={labelStyle}>New Password</label>
+        <form onSubmit={onSubmit} className="flex flex-col gap-4">
+          <Field label="New Password">
             <input
               type="password"
+              autoComplete="new-password"
               value={password}
               onChange={e => setPassword(e.target.value)}
               required
-              style={inputStyle}
+              className={inputClass}
             />
-          </div>
-          <div style={{ marginBottom: '1.5rem' }}>
-            <label style={labelStyle}>Confirm Password</label>
+          </Field>
+          <Field label="Confirm Password">
             <input
               type="password"
+              autoComplete="new-password"
               value={confirm}
               onChange={e => setConfirm(e.target.value)}
               required
-              style={inputStyle}
+              className={inputClass}
             />
-          </div>
-          <button
-            type="submit"
-            disabled={loading}
-            style={{ width: '100%', background: '#7a5c3a', color: '#faf7f0', border: 'none', borderRadius: '8px', padding: '0.75rem', fontSize: '0.95rem', fontWeight: 500, cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.6 : 1 }}
-          >
+          </Field>
+          {error && <Notice>{error}</Notice>}
+          <Button type="submit" disabled={loading}>
             {loading ? "Saving..." : "Set Password"}
-          </button>
+          </Button>
         </form>
       )}
-    </div>
+    </PageShell>
   );
 }

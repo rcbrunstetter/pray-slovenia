@@ -39,6 +39,7 @@ export async function GET(req: NextRequest) {
       .from("recurring_prompts")
       .select("title, content")
       .eq("day_of_month", dayOfMonth)
+      .limit(1)
       .maybeSingle();
     resolvedPrompt = recurring ?? null;
   }
@@ -67,10 +68,11 @@ export async function GET(req: NextRequest) {
           JSON.stringify({ title, body, url: "/" })
         );
         sent++;
-      } catch (err: any) {
+      } catch (err) {
         failed++;
         // If subscription is expired/invalid, deactivate it
-        if (err.statusCode === 410 || err.statusCode === 404) {
+        const { statusCode } = err as { statusCode?: number };
+        if (statusCode === 410 || statusCode === 404) {
           await supabaseAdmin.from("push_subscriptions").update({ active: false }).eq("endpoint", sub.endpoint);
         }
       }

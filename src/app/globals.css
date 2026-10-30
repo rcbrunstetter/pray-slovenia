@@ -57,9 +57,43 @@
 }
 
 @layer base {
-  body {
-    @apply min-h-dvh bg-night pb-(--tabbar) font-serif text-ivory antialiased md:pb-0;
+  html {
+    @apply bg-night;
+    -webkit-tap-highlight-color: transparent;
   }
+
+  body {
+    @apply flex min-h-dvh flex-col bg-night pb-(--tabbar) font-serif text-ivory antialiased md:pb-0;
+  }
+
+  a,
+  button,
+  label {
+    touch-action: manipulation;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+  }
+
+  .bg-sheet :focus-visible {
+    outline-color: var(--label);
+  }
+
+  ::selection {
+    background: rgba(244, 201, 119, 0.35);
+  }
+}
+
+.page-enter,
+.fade-in {
+  animation: fade-in 0.2s ease-out;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .light {
@@ -94,7 +128,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .light {
+  .light,
+  .page-enter,
+  .fade-in {
     animation: none;
   }
 }

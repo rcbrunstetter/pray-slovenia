@@ -1,4 +1,5 @@
 // src/lib/admin.ts
+import { redirect } from "next/navigation";
 import { createClientServer } from "@/lib/supabase-server";
 
 export type AdminCheck = {
@@ -25,4 +26,11 @@ export async function requireAdmin(): Promise<AdminCheck> {
   }
 
   return { isAdmin: data === true, user: { id: user.id, email: user.email } };
+}
+
+// For admin pages: sends anyone who isn't an admin to the login page.
+export async function requireAdminPage(): Promise<AdminCheck> {
+  const check = await requireAdmin();
+  if (!check.isAdmin) redirect(check.user ? "/admin/login?denied=1" : "/admin/login");
+  return check;
 }

@@ -21,8 +21,13 @@ export async function POST(req: NextRequest) {
 export async function PATCH(req: NextRequest) {
   const { isAdmin } = await requireAdmin();
   if (!isAdmin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const { id, is_active } = await req.json();
-  const { error } = await supabaseAdmin.from("prayer_requests").update({ is_active }).eq("id", id);
+  const { id, ...changes } = await req.json();
+  const allowed = ["title", "content", "is_urgent", "is_active"];
+  const update = Object.fromEntries(Object.entries(changes).filter(([key]) => allowed.includes(key)));
+  if (!id || Object.keys(update).length === 0) {
+    return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+  }
+  const { error } = await supabaseAdmin.from("prayer_requests").update(update).eq("id", id);
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
   return NextResponse.json({ ok: true });
 }
